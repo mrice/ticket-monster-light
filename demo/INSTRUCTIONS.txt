@@ -1,0 +1,50 @@
+The following is a list of steps that were needed in order to get the ticket-
+monster project deployed in JBoss EAP 6 on top of OpenShift Online.  These
+instructions assume you already have an Openshift Online account and can deploy
+to medium and large gears
+
+1.	Add the JBoss EAP 6 Application in OpenShift Online.
+2.	Add the PostgreSQL Cartridge for the JBoss EAP 6 Application.
+3.	Clone the JBoss EAP git repo.
+4.	Clone this repo (rhc-west/ticket-monster).
+5.	You will need to add the following repositories to your MVN settings.xml:
+		
+		<id>jboss-ga-repository</id>
+		<url>http://maven.repository.redhat.com/techpreview/all</url>
+		
+		<id>jboss-earlyaccess-repository</id>
+		<url>http://maven.repository.redhat.com/earlyaccess/all/</url>
+
+6.	Replace '2.6.0-redhat-1' with '2.5.0-redhat-1' in the pom.xml for this 
+	project.  Details about steps 4 and 5 can be found here:
+	
+		https://community.jboss.org/thread/242175
+
+7.	Make sure ticket-monster builds properly with 'mvn -U clean package'.
+8.	package a .war file with postgres and openshift support with the following:
+
+		mvn clean package -Ppostgresql-openshift
+
+9.	Copy the target/ticket-monster.war file created (located at 
+	<root-of-openshift-application-git-repo>):
+
+		cp target/ticket-monster.war 
+			<root-of-openshift-application-git-repo>/deployments/ROOT.war
+
+10.	Navigate to <root-of-openshift-application-git-repos> folder.
+11.	Remove the existing src folder and pom.xml file:
+
+		git rm -r src
+		git rm pom.xml
+
+12.	Add the copied file to the repository, commit and push to Openshift:
+
+		git add deployments/ROOT.war
+		git commit -m "Deploy TicketMonster"
+		git push
+
+13.	Now you can see the application running at: 
+
+		http://<app-name>-<domain-name>.rhcloud.com
+
+
