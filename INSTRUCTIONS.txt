@@ -2,7 +2,7 @@ The following is a list of steps that were needed in order to get the ticket-
 monster project deployed in JBoss EAP 6 on top of OpenShift Online.  These
 instructions assume you already have an Openshift Online account and can deploy
 to medium and large gears
-
+  
 1.	Add the JBoss EAP 6 Application in OpenShift Online.
 2.	Add the PostgreSQL Cartridge for the JBoss EAP 6 Application.
 3.	Clone the JBoss EAP git repo.
